@@ -1,0 +1,126 @@
+﻿@model UniversityCourseAndResultManagementApp.Models.Teacher
+@{
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.Title = "Save Teacher";
+}
+
+@section style {
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+}
+<section class="content-header">
+    <h1>
+        Teacher
+        <small>Save Teacher</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Teacher</a></li>
+        <li class="active">Save Teacher</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Enter teacher's info:</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+
+
+                @using (Html.BeginForm("SaveTeacher", "Department", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter name" })
+                                @Html.ValidationMessageFor(m => m.Name)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.Address, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Enter address" })
+                                @Html.ValidationMessageFor(m => m.Address)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.Email, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+
+                                @Html.TextAreaFor(m => m.Email, new { @class = "form-control", placeholder = "Enter email" })
+                                @Html.ValidationMessageFor(m => m.Email)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.ContactNo, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+
+                                @Html.TextAreaFor(m => m.ContactNo, new { @class = "form-control", placeholder = "Enter Contact No" })
+                                @Html.ValidationMessageFor(m => m.ContactNo)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.DesignationId, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.DesignationId, new SelectList(ViewBag.departments, "Value", "Text"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DesignationId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.DepartmentId, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.departments, "Value", "Text"), new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.DepartmentId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.CreditTake, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-8">
+
+                                @Html.TextBoxFor(m => m.CreditTake, new { @class = "form-control", placeholder = "Enter credit" })
+                                @Html.ValidationMessageFor(m => m.CreditTake)
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer ">
+                        @if (ViewBag.msg == "Teacher saved successfully")
+                        {
+                            <label class="col-sm-7" style="color: green">@ViewBag.msg</label>
+                        }
+                        else
+                        {
+                            <label class="col-sm-7" style="color: red">@ViewBag.msg</label>
+                        }
+
+                        <button type="submit" class="btn btn-primary pull-right col-sm-4">Save</button>
+                    </div>
+                    <!-- /.box-footer -->
+
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+

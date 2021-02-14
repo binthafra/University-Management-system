@@ -1,0 +1,67 @@
+﻿
+@{
+                /**/
+
+                Layout = "~/Views/Shared/MainLayout.cshtml";
+                ViewBag.Title = "UnassignCourses";
+
+
+}
+
+<section class="content-header">
+    <h1>
+        Course
+        <small>Unassign Courses</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Course</a></li>
+        <li class="active">Unassign Courses</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Unassign Courses:</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", id = "UnassignCourses" }))
+                    {
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="unassignCourese"></label>
+                            <div class="col-md-4">
+                                <button id="unassignCourese" onclick="return confirm('You are unassigning all courses,Are you sure?');" name="unassignCourese" class="btn btn-primary btn-lg">Unassign Courses</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="box-footer ">
+                   
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"></label>
+                        <div class="col-md-4 ">
+                            @if (ViewBag.Message != null)
+                            {
+                                if (ViewBag.Message == "Course already unassigned")
+                                {
+                                    <label style="color:red">@ViewBag.Message</label>
+                                }
+                                else
+                                {
+                                    <label style="color:green">@ViewBag.Message</label>
+                                }
+
+                            }
+                        </div>
+                    </div>
+
+                     </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</section>

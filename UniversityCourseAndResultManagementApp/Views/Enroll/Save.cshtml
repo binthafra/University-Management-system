@@ -1,0 +1,208 @@
+﻿@using UniversityCourseAndResultManagementApp.Models
+@model UniversityCourseAndResultManagementApp.Models.Student
+@{
+    /**/
+
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.Title = "Course enrollment";
+}
+
+
+
+@section style{
+
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+}
+
+<section class="content-header">
+    <h1>
+        Student
+        <small>Course enrollment</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Student</a></li>
+        <li class="active"> Course enrollment</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-7">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Enter course info:</h3>
+                </div>
+                <form class="form-horizontal" method="POST" id="Enroll">
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Id">Reg No</label>
+                            <div class="col-sm-6">
+                                <select id="Id" name="Id" class="form-control" onchange="">
+                                    <option value="">Select</option>
+
+                                    @foreach (Student student in ViewBag.students)
+                                    {
+                                        <option value="@student.Id">@student.RegNo</option>
+                                    }
+
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Name">Name</label>
+                            <div class="col-sm-6">
+                                <input id="Name" name="Name" disabled="disabled" class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Email">Email</label>
+                            <div class="col-sm-6">
+                                <input id="Email" name="Email" readonly class="form-control" />
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Code">Department</label>
+                            <div class="col-sm-6">
+                                <input id="Code" name="Code" readonly class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="CourseId">Select Course</label>
+                            <div class="col-sm-6">
+                                <select id="CourseId" name="CourseId" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Date">Date</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="Date" name="Date" class="datepicker form-control" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer ">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="Date"></label>
+                            <div class="col-sm-6">
+                                <button type="submit" class="btn btn-primary col-sm-4">Enroll</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Date"></label>
+                            <div class="col-sm-8">
+                                @if (ViewBag.msg != null)
+                                {
+                                    if (ViewBag.msg == "Course enrolled successfull")
+                                    {
+                                        <label class="col-sm-7" style="color: green">@ViewBag.msg</label>
+
+                                    }
+                                    else
+                                    {
+                                        <label class="col-sm-7" style="color: red">@ViewBag.msg</label>
+
+                                    }
+
+                                }
+                            </div>
+                        </div>
+                        
+                       
+                        
+                    </div>
+                    <!-- /.box-footer -->
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- /.content-wrapper -->
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script>
+    $(document).ready(function () {
+        $("#Id").change(function () {
+            var id = $("#Id").val();
+            $("#Name").empty();
+            $("#Email").empty();
+            $("#Code").empty();
+            $("#CourseId").empty();
+            $("#CourseId").append('<option value="">Select</option>');
+            var json = { Id: id };
+            $.ajax({
+                type: "POST",
+                url: '/Enroll/GetStudentInfo',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#Name").val(data.Name);
+                    $("#Email").val(data.Email);
+                    $("#Code").val(data.Code);
+                    $.each(data.Courses, function (key, value) {
+                        $("#CourseId").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+
+                    });
+                }
+            });
+        });
+        $("#Date").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            yearRange: '1990:2030',
+            changeYear: true
+
+        });
+
+        $("#Enroll").validate({
+            rules: {
+                Id: "required",
+                CourseId: "required",
+                Date: "required"
+
+            },
+            messages: {
+                Id: "Please select Student Reg No",
+                CourseId: "Please select any Course",
+                Date: "Please select Date"
+            }
+        });
+    });
+</script>
+
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+@*<script src="~/Scripts/bootstrap2/js/bootstrap.min.js"></script>*@
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+
+
+

@@ -1,0 +1,84 @@
+﻿@using UniversityCourseAndResultManagementApp.Models
+
+@{
+    
+    Student student = ViewBag.Student;
+    
+}
+
+<section class="content-header">
+    <h1>
+        Student
+        <small>Student info</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Stdudent</a></li>
+        <li class="active">Student info</li>
+    </ol>
+</section>
+<section class="content">
+<div class="row">
+<div class="col-md-2"></div>
+<div class="col-md-7">
+<!-- Horizontal Form -->
+<div class="box box-info">
+<div class="box-header with-border">
+    <h3 class="box-title">Student info:</h3>
+</div>
+<div class="box-body">
+    <dl class="dl-horizontal">
+        <dt>
+            <label class="col-md-4 control-label" for="Name">Name</label>
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="Name">@student.Name</label>
+        </dd>
+        <dt>
+            <label class="col-md-4 control-label" for="Email">Email</label>
+
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="Email">@student.Email</label>
+        </dd>
+        <dt>
+            <label class="col-md-4 control-label" for="ContactNo">Contact No.</label>
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="ContactNo">@student.ContactNo</label>
+        </dd>
+        <dt>
+            <label class="col-md-4 control-label" for="Department">Department</label>
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="Department">@student.Department</label>
+        </dd>
+        <dt>
+            <label class="col-md-4 control-label" for="RegNo">Reg No.</label>
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="RegNo">@student.RegNo</label>
+        </dd>
+        <dt>
+            <label class="col-md-4 control-label" for="Address">Address</label>
+        </dt>
+
+        <dd>
+            <label class="col-md-4 control-label" for="Address">@student.Address</label>
+        </dd>
+    </dl>
+
+
+                </div>
+                <!-- /.box-body -->
+
+            </div>
+
+        </div>
+    </div>
+</section>

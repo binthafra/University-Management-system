@@ -1,0 +1,259 @@
+﻿
+@using UniversityCourseAndResultManagementApp.Models
+@model UniversityCourseAndResultManagementApp.Models.Teacher
+@{
+    /**/
+
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.Title = "Course Assaign Teacher";
+}
+
+
+
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+
+
+<section class="content-header">
+    <h1>
+        Course
+        <small>Assign course</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Course</a></li>
+        <li class="active">Assign course</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-7">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Enter course info:</h3>
+                </div>
+                <form class="form-horizontal" method="POST" id="CourseAssaign">
+                    <div class="box-body">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="DepartmentId">Department</label>
+                            <div class="col-sm-8">
+                                <select id="DepartmentId" name="DepartmentId" class="form-control" onchange="">
+                                    <option value="">Select</option>
+
+                                    @foreach (Department department in ViewBag.departments)
+                                    {
+                                        <option value="@department.Id">@department.Name</option>
+                                    }
+
+
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Id">Teacher</label>
+                            <div class="col-sm-8">
+                                <select id="Id" name="Id" class="form-control" onchange=""></select>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="CreditTake">Credit to be taken</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="CreditTake" name="CreditTake" value="" class="form-control" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="CreditLeft">Remaining Credit</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="CreditLeft" name="CreditLeft" value="" class="form-control" readonly="readonly">
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="CourseId">Course Code</label>
+                            <div class="col-sm-8">
+                                <select id="CourseId" name="CourseId" class="form-control" onchange=""></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Name">Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="Name" name="Name" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="Credit">Credit</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="Credit" name="Credit" value="" class="form-control" readonly="readonly">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer ">
+                        @if (ViewBag.assaigned != null)
+                        {
+                            if (ViewBag.assaigned == 2)
+                            {
+                                <label class="col-sm-7" style="color: red">Course already assaigned !!!</label>
+
+                            }
+                            else
+                            {
+                                <label class="col-sm-7" style="color: green">Course assaigned sucessfully !!!</label>
+
+                            }
+
+                        }
+
+
+                        <button type="submit" class="btn btn-primary pull-right col-sm-4" id="clickMe" value="submit">Submit</button>
+                    </div>
+                    <!-- /.box-footer -->
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- /.content-wrapper -->
+<!-- ./wrapper -->
+<!-- jQuery 2.2.3 -->
+@*<script src="~/Scripts/jquery-2.2.3.min.js"></script>*@
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#DepartmentId").change(function () {
+            var deptId = $("#DepartmentId").val();
+            $("#CourseId").empty();
+            $("#Id").empty();
+            $("#CourseId").append('<option value="">Select</option>');
+            $("#Id").append('<option value="">Select</option>');
+            var json = { id: deptId };
+            $.ajax({
+                type: "POST",
+                url: '/Department/GetTeacherCourseByDepartmentId',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $.each(data.Teachers,
+                        function (key, value) {
+                            $("#Id").append('<option value="' + value.Id + '">' + value.Name + '</option>');
+                        });
+                    $.each(data.Courses,
+                        function (key, value) {
+                            $("#CourseId").append('<option value="' + value.Id + '">' + value.Code + '</option>');
+
+                        });
+
+                }
+            });
+        });
+
+        $("#Id").change(function () {
+            var tId = $("#Id").val();
+            $("#CreditTake").empty();
+            $("#CreditLeft").empty();
+            var json = { id: tId };
+            $.ajax({
+                type: "POST",
+                url: '/Department/GetTeacherInfoById',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+
+                    $("#CreditTake").val(data.CreditTake);
+                    $("#CreditLeft").val(data.CreditLeft);
+                }
+            });
+        });
+
+        $("#CourseId").change(function () {
+
+
+            var cId = $("#CourseId").val();
+            $("#Name").empty();
+            $("#Credit").empty();
+            var json = { id: cId };
+            $.ajax({
+                type: "POST",
+                url: '/Department/GetCourseInfoById',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+
+                    $("#Name").val(data.Name);
+                    $("#Credit").val(data.Credit);
+
+                }
+            });
+
+
+        });
+
+
+
+
+        $("#CourseAssaign").validate({
+            rules: {
+                DepartmentId: "required",
+                CourseId: "required",
+                Id: "required"
+
+            },
+            messages: {
+                DepartmentId: "Please select department",
+                CourseId: "Please select any Course",
+                Id: "Please select Teacher"
+            }
+        });
+        $("#CourseAssaign").submit(function () {
+
+            //var remain = document.getElementById('CreditLeft').value;
+            //var credit = document.getElementById('Credit').value;
+
+            var r = $('#CreditLeft').val();
+            var c = $('#Credit').val();
+            var remain = parseFloat(r);
+            var credit = parseFloat(c);
+            var p = remain + credit;
+            if (credit > remain) {
+                return confirm('Course credit is more than Remaining Credit . Do you want to proceed?');
+            }
+            
+
+
+        });
+
+    });
+
+
+</script>
+
+<script src="~/Scripts/bootstrap.min.js"></script>
+@*<script src="~/Scripts/bootstrap2/js/bootstrap.min.js"></script>*@
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+
+

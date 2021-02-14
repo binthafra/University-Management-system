@@ -1,0 +1,81 @@
+﻿@model UniversityCourseAndResultManagementApp.Models.Department
+
+@{
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.Title = "SaveDepartment";
+}
+
+
+@section style {
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+}<section class="content-header">
+    <h1>
+        Department
+        <small>Save Department</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Department</a></li>
+        <li class="active">Save Department</li>
+    </ol>
+</section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6"><div class="col-md-3"></div>
+                <!-- Horizontal Form -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Enter department info:</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    
+         
+                    @using (Html.BeginForm("SaveDepartment", "Department", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        <div class="box-body">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Code, new { @class = "col-sm-2 control-label"})
+                                <div class="col-sm-10">
+                                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control",placeholder= "Department code" })
+                                    @Html.ValidationMessageFor(m => m.Code)
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                
+                                @Html.LabelFor(m => m.Name, new { @class = "col-sm-2 control-label" })
+                                <div class="col-sm-10">
+
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" , placeholder = "Department name" })
+                                    @Html.ValidationMessageFor(m => m.Name)
+                                </div>
+                            </div>
+                            
+                           
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer ">
+                            @if (ViewBag.msg == "Department already exists")
+    {
+                        <label class="col-sm-7" style="color: red">@ViewBag.msg</label>
+}
+else
+{
+                        <label class="col-sm-7" style="color: green">@ViewBag.msg</label>
+}
+
+                            <button type="submit" class="btn btn-primary pull-right col-sm-4">Save</button>
+                        </div>
+                        <!-- /.box-footer -->
+                       
+                    }
+                </div>
+              
+            </div>
+        </div>
+    </section>

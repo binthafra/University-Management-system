@@ -1,0 +1,112 @@
+﻿
+@{
+                /**/
+
+                Layout = "~/Views/Shared/MainLayout.cshtml";
+                ViewBag.Title = "ViewCourseStatics";
+}
+<section class="content-header">
+    <h1>
+        Course
+        <small>View Course statics</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Course</a></li>
+        <li class="active">View Course statics</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Department List:</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", id = "viewCourseStatics" }))
+                    {
+
+                        <div class="form-group">
+
+                            <label class="col-md-4 control-label" for="departmentId">Select Department</label>
+                            <div class="col-md-4">
+                                <select class="form-control" name="departmentId" id="departmentId">
+                                    <option value="">--Select--</option>
+                                    @foreach (var department in ViewBag.Departments)
+                                    {
+                                        <option value="@department.Id">@department.Name</option>
+                                    }
+                                </select>
+
+
+
+                            </div>
+
+                        </div>
+                    }
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name/Title</th>
+                            <th>Semester</th>
+                            <th>Assaigned To</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tableBody">
+
+                        </tbody>
+                        
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#myTable").hide();
+            $("#departmentId").change(function() {
+                var deptId = $("#departmentId").val();
+                $("#myTable").show();
+                $("#tableBody").empty();
+                var json = { id: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '/Department/GetCoursesByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(data) {
+
+                        $.each(data,
+                            function(key, value) {
+
+
+                                $("#tableBody").append('<tr><td>' +
+                                    value.Code +
+                                    '</td><td>' +
+                                    value.Name +
+                                    '</td><td>' +
+                                    value.SemName +
+                                    '</td><td>' +
+                                    value.TeacherName +
+                                    '</td></tr>');
+
+                            });
+                    }
+                });
+            });
+        });
+    </script>}
+   
+
+
+
+
+

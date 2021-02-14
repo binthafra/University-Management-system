@@ -1,0 +1,143 @@
+﻿@model UniversityCourseAndResultManagementApp.Models.Student
+
+
+@{
+
+    ViewBag.Title = "Register";
+
+}
+@section style {
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <style>
+        .field-validation-error {
+            color: red;
+            font-style: italic;
+        }
+    </style>
+}
+    <section class="content-header">
+        <h1>
+            Student
+            <small>Register</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Student</a></li>
+            <li class="active">Register</li>
+        </ol>
+    </section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <!-- Horizontal Form -->
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Enter student's info:</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+
+
+                @using (Html.BeginForm(null,null,FormMethod.Post,new { @class = "form-horizontal", id = "saveStudentForm" }))
+                {
+                <div class="box-body">
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Name, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.Name)
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.Email)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ContactNo, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.ContactNo, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.ContactNo)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="Date">Date</label>
+                        <div class="col-md-6">
+                            <input id="Date" name="Date" type="text" placeholder="dd-mm-yyyy" class="form-control input-md" required>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.DepartmentId, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(x => x.DepartmentId, new SelectList(ViewBag.Departments, "Value", "Text"), new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.DepartmentId)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Address, new { @class = "col-md-3 control-label" })
+                        <div class="col-md-6">
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control input-md" })
+                            @Html.ValidationMessageFor(m => m.Address)
+                        </div>
+                    </div>
+                  
+
+                </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer ">
+                        <div class="form-group">
+
+                            <div class="col-md-4 ">
+                                @if (ViewBag.Message != null)
+                                {
+                                    if (ViewBag.Message == "Enail already exists...")
+                                    {
+                                        <label style="color:red">@ViewBag.Message</label>
+                                    }
+                                    else
+                                    {
+                                        <label style="color:green">@ViewBag.Message</label>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    
+                        <button type="submit" id="Register" name="Register" class="btn btn-primary pull-right col-sm-4">Register</button>
+
+                    </div>
+                    <!-- /.box-footer -->
+
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $("#Date").datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                yearRange: '1990:2030',
+                changeYear: true,
+                gotoCurrent: true
+
+            }).datepicker('setDate', "0");
+
+
+
+        });
+
+    </script>
+}
